@@ -91,7 +91,7 @@ EOD;
 //Track list for featured release
 
 
-//If a preview is available attach a Flash preview button
+//If a preview is available attach a preview button
 
 if($track->preview!=""){
 $audio_button=<<<EOD
