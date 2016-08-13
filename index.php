@@ -60,6 +60,8 @@ $i=0;
 foreach ($inzu->data[0]->track as $track) { 
 
 
+$price = $track->{'price_'.$loc};
+
 //The track marked as "bundle" is used to retrieve information such as bundle price and bundle title
 
 if($track->number=="bundle"){
@@ -74,13 +76,13 @@ $featured=<<<EOD
     </p>
 </div>
 
-<div class="shopPriceFeatured"><p><strong>Price: &#36;{$track->price_us}</strong></p></div>
+<div class="shopPriceFeatured"><p><strong>Price: {$currency}{$price}</strong></p></div>
 <div class="formats">Formats: $format_links</div>
 
 <div class="buy_button" style="float:right" >
 <!--The price information and buy button must be in the same container!-->
 <input name="item_code" type="hidden" value="{$track->item_code}" />
-<input name="price" type="hidden" value="{$track->price_us}" />
+<input name="price" type="hidden" value="{$price}" />
 <a class="button buy" href="javascript: void(0);" onClick="store_cart.updateCart(this)" >BUY</a>
 </div>
 EOD;
@@ -119,14 +121,14 @@ if($track->number!="bundle"){
 //Only include buy button and price for each track if format is Digital
 if($inzu->data[0]->format=="Digital"){
 
-$track_price="- <strong>&#36;{$track->price_us}</strong>";
+$price_info ="- <strong>{$currency}{$price}</strong>";
 
 $buy=<<<EOD
 <td width="40" align="left" >
 <div>
 <!--The price information and buy button must be in the same container!-->
 <input name="item_code" type="hidden" value="{$track->item_code}" />
-<input name="price" type="hidden" value="{$track->price_us}" />
+<input name="price" type="hidden" value="{$price}" />
 <a class="button buy" href="javascript: void(0);" onClick="store_cart.updateCart(this)">BUY</a>
 </div>
 </td>
@@ -141,7 +143,7 @@ $i++;
 $track_list.=<<<EOD
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="17">
   <tr height="33">
-    <td class="shopDes" >$i. {$track->title} $track_price</td>
+    <td class="shopDes" >$i. {$track->title} $price_info</td>
     <td width="40" align="left" >$audio_button</td>
     $buy
   </tr>
@@ -163,6 +165,8 @@ $json = file_get_contents("$api_base/store/music?api_key={$api_key}&page=1&page_
 $inzu = json_decode($json); 
 
 foreach ($inzu->data as $product) { 
+
+$price = $product->track[0]->{'price_'.$loc};
 
 
 //Create format links
@@ -192,7 +196,7 @@ $more_releases.=<<<EOD
 	    <div class="img"><img src="{$product->image_thumb}" /></div>
 	    <h3>{$product->bundle_title}</h3>
 	    <p>{$product->short_description}</p>
-	    <p class="price"><strong>Price: &#36;{$product->track[0]->price_us}</strong></p>
+	    <p class="price"><strong>Price: {$currency}{$price}</strong></p>
 	</div>
 
 	$format_links
@@ -201,7 +205,7 @@ $more_releases.=<<<EOD
     <a class="button view" href="index.php?cat_no={$product->cat_no}&format={$product->format}">+ view tracks</a>
     <!--The price information and buy button must be in the same container!-->
 	<input name="item_code" type="hidden" value="{$product->track[0]->item_code}" />
-	<input name="price" type="hidden" value="{$product->track[0]->price_us}" />
+	<input name="price" type="hidden" value="{$price}" />
     <a class="button buy" href="javascript: void(0);" onClick="store_cart.updateCart(this)">BUY</a>
     </div>
 </div>

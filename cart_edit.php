@@ -68,7 +68,7 @@ $i++;
 		<table cellspacing="0" cellpadding="0" width="100%" >
 			<tr>
 			<td valgin="left" width="265"><?php echo $item->title; ?></td>
-			<td align="right"valgin="middle" width="80"><?php echo $currency.$item->price_uk; ?></td>
+			<td align="right"valgin="middle" width="80"><?php echo $currency.$item->{'price_'.$loc}; ?></td>
 			<td align="right" valign="middle" width="8"></td>
 			<td align="left" valgin="middle" width="30">
 			<input type="text" id="item_quantity_<?php echo $i; ?>" name="quantity" value="<?php echo $item->quantity; ?>" size="2" maxlength="2">
