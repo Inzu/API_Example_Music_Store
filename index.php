@@ -31,9 +31,9 @@ $_SESSION['cat_no']=$cat_no;
 
 //If a release has been selected use "cat no" to get the data from INZU otherwise just select the latest release
 if($cat_no){
-$json = file_get_contents("http://api.inzu.net/1.4/store/music?api_key={$api_key}&cat_no={$cat_no}&format={$format}");
+$json = file_get_contents("$api_base/store/music?api_key={$api_key}&cat_no={$cat_no}&format={$format}");
 }else{
-$json = file_get_contents("http://api.inzu.net/1.4/store/music?api_key={$api_key}&latest=true&format={$format}");
+$json = file_get_contents("$api_base/store/music?api_key={$api_key}&latest=true&format={$format}");
 }
 
 $inzu = json_decode($json); 
