@@ -45,11 +45,9 @@ Change the code in these files to suit your site design.
 
 FILES
 
-add_item.js - this will add items to a users cart using AJAX (with cart.php).
-cart_data.php - this will process the cookie used to store cart information.
-cart_edit.php - let users edit their cart.
+cart.js - this script manages the cart cookie for adding items and editing the cart.
 config.php - your API account settings and some shop settings such as currency and callback URL.
-index.php - display an example store page.
+index.php - display an example music store page.
 style.css - styles for this example.
 
 For more information on the INZU API and to reference every API feed please visit http://developers.inzu.net or contact support@inzu.net.

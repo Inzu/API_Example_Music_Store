@@ -83,7 +83,7 @@ $featured=<<<EOD
 <!--The price information and buy button must be in the same container!-->
 <input name="item_code" type="hidden" value="{$track->item_code}" />
 <input name="price" type="hidden" value="{$price}" />
-<a class="button buy" href="javascript: void(0);" onClick="store_cart.updateCart(this)" >BUY</a>
+<a class="button buy" href="javascript: void(0);" onClick="store_cart.addItem(this)" >BUY</a>
 </div>
 EOD;
 }
@@ -129,7 +129,7 @@ $buy=<<<EOD
 <!--The price information and buy button must be in the same container!-->
 <input name="item_code" type="hidden" value="{$track->item_code}" />
 <input name="price" type="hidden" value="{$price}" />
-<a class="button buy" href="javascript: void(0);" onClick="store_cart.updateCart(this)">BUY</a>
+<a class="button buy" href="javascript: void(0);" onClick="store_cart.addItem(this)">BUY</a>
 </div>
 </td>
 EOD;
@@ -206,7 +206,7 @@ $more_releases.=<<<EOD
     <!--The price information and buy button must be in the same container!-->
 	<input name="item_code" type="hidden" value="{$product->track[0]->item_code}" />
 	<input name="price" type="hidden" value="{$price}" />
-    <a class="button buy" href="javascript: void(0);" onClick="store_cart.updateCart(this)">BUY</a>
+    <a class="button buy" href="javascript: void(0);" onClick="store_cart.addItem(this)">BUY</a>
     </div>
 </div>
 EOD;
@@ -220,7 +220,7 @@ EOD;
 
 <html>
 <head>
-<script type="text/javascript" src="add_item.js"></script>
+<script type="text/javascript" src="cart.js"></script>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 
@@ -268,7 +268,8 @@ var playSound = {
 
 </script>
 </head>
-<body>
+<!-- onpageshow refresh cart/page on browser back -->
+<body onpageshow="if (event.persisted) window.location.reload()">
 	
 <div id="cart">
 	
@@ -277,7 +278,7 @@ var playSound = {
 <div class="read-out">Items:  <span id="cart-size"></span></div>
 <div class="read-out"><span>Total:  <?php echo $currency; ?></span><span id="cart-total"></span><a class="button cart-edit" href="cart_edit.php">edit</a><a class="button cart-checkout" id="cart-checkout" href="">checkout</a></div>
 
-<div class="read-out" id="cart-updated"></div>
+<div class="update" id="cart-updated"></div>
 
 <script type="text/javascript">
 var store_cart = new Inzu_cart("<?php echo $pay_url; ?>", "<?php echo $pay_callback; ?>");	
