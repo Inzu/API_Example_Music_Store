@@ -13,9 +13,11 @@ function Inzu_cart(checkoutlink,callback) {
 	//Get 'cart' cookie or if undefined create it
 	this.cookie = this.helper.getCookie('cart');
 
-	if(  typeof undefined === typeof this.cookie || !this.cookie ){
+	if ( typeof undefined === typeof this.cookie || !this.cookie ) {
+		
 		this.helper.setCookie('cart', JSON.stringify({ 'cart' : [], 'cart_total' : '0.00', 'cart_size' : '0' }), 7);
-		this.cookie = this.helper.getCookie('cart');	
+		this.cookie = this.helper.getCookie('cart');
+			
 	}
 	
 	
@@ -47,7 +49,7 @@ Inzu_cart.prototype.addItem = function(el){
 	
 	//Get information for selected item
 	
-	if( typeof undefined !== typeof el ){	 
+	if ( typeof undefined !== typeof el ) {	 
 		
 		//Get product price and item code	
 		var inputs = el.parentElement.getElementsByTagName("input");
@@ -56,17 +58,17 @@ Inzu_cart.prototype.addItem = function(el){
 		
 			for (var i = 0; i < inputs.length; i++) {
 				
-				if( 'item_code' === inputs[i].name ) code = inputs[i].value;
-				if( 'price' === inputs[i].name ) price =  inputs[i].value;
+				if ( 'item_code' === inputs[i].name ) code = inputs[i].value;
+				if ( 'price' === inputs[i].name ) price =  inputs[i].value;
 				
 			}	
 			
-		}else{		
+		} else {		
 		
 		//Get for variations get selected variations price and item code		
 		var selected = el.parentElement.getElementsByTagName("select");
 	
-			for (var i = 0; i < selected.length; i++) {
+			for ( var i=0; i < selected.length; i++) {
 			
 				var values = selected[i].options[selected[i].selectedIndex].value;				
 				values = values.split(",");
@@ -87,22 +89,26 @@ Inzu_cart.prototype.addItem = function(el){
 		
 	//Add data to cookie
 
-	if( typeof undefined !== typeof data.item_code ){
+	if ( typeof undefined !== typeof data.item_code ) {
 		
 		var increment = false;
 		
 		//Search cart for a product that matches the one being added
-		for( var key in this.cookie.cart ){
-			if( this.cookie.cart[key].item_code === data.item_code ){
+		for ( var key in this.cookie.cart ) {
+			
+			if ( this.cookie.cart[key].item_code === data.item_code ) {
 				this.cookie.cart[key].quantity++;
 				increment = true;
 			}
+			
 		}
 
 		//If we aren't incrementing or the cart is empty set the quantity to 1 and add to the cart
-		if( !increment || this.cookie.cart.length === 0){
+		if ( !increment || this.cookie.cart.length === 0) {
+			
 			data.quantity = 1;
-			this.cookie.cart.push( data );
+			this.cookie.cart.push(data);
+			
 		}
 
 		//Refresh cart display
@@ -154,17 +160,17 @@ function Inzu_cartEdit(pay_url){
 }
 
 
-Inzu_cartEdit.prototype.adjust = function(i,value){
+Inzu_cartEdit.prototype.adjust = function(i, value) {
 	
 	//If the input has been erased do nothing
-	if(value === '' ) return;
+	if (value === '' ) return;
 
 	//If input is zero remove item
-	if( value === '0' ){
+	if ( value === '0' ) {
 		
 	this.deleteItem(i);
 		
-	}else{
+	} else {
 
 	//Adjust quantity of item
 	this.cookie.cart[parseInt(i)].quantity = parseInt(value);
@@ -190,7 +196,7 @@ Inzu_cartEdit.prototype.adjust = function(i,value){
 
 
 //Callback function for when quantity is changed
-Inzu_cartEdit.prototype.quantityUpdated = function(){
+Inzu_cartEdit.prototype.quantityUpdated = function() {
 
 	var fadeDelay = 1500; //How long the message is displayed
 	
@@ -209,12 +215,14 @@ Inzu_cartEdit.prototype.quantityUpdated = function(){
 
 Inzu_cartEdit.prototype.deleteItem = function(item_code,i){
 	
-	for( var key in this.cookie.cart ){
-		if( this.cookie.cart[key].item_code === item_code.toString() ){
+	for ( var key in this.cookie.cart ) {
+		
+		if ( this.cookie.cart[key].item_code === item_code.toString() ) {
 			//Adjust cookie
-			this.cookie.cart.splice(key,1);
+			this.cookie.cart.splice(key, 1);
 			this.helper.setCookie('cart', JSON.stringify(this.cookie), 7);
 		}
+		
 	}
 	
 
@@ -258,6 +266,7 @@ Inzu_cartHelper.prototype.loopCart = function(cart){
 	}
 	
 	this.cart_data = { 'price' : Math.round(price * 100) / 100, 'size' : size, 'items' : items};
+	
 }
 
 
@@ -265,20 +274,27 @@ Inzu_cartHelper.prototype.loopCart = function(cart){
 
 //Fade in selected element
 Inzu_cartHelper.prototype.fadeIn = function(obj, element, fadeDelay){
+	
     var op = 0;
     element.style.display = 'inline-block';
 	element.style.opacity = 0;
     element.style.filter = 'alpha(opacity="0")';
 	
     obj.timer = setInterval(function () {
-        if (op >= 0.9){
-            clearInterval( obj.timer );
+	    
+        if ( op >= 0.9 ) {
+	        
+            clearInterval(obj.timer);
 			setTimeout( obj.helper.fadeOut(obj, element), fadeDelay );
+			
         }
+        
         element.style.opacity = op;
         element.style.filter = 'alpha(opacity=' + op * 100 + ")";
         op += 0.1;
+        
     }, 50);
+    
 }
 
 
@@ -286,13 +302,16 @@ Inzu_cartHelper.prototype.fadeIn = function(obj, element, fadeDelay){
 Inzu_cartHelper.prototype.fadeOut = function(obj, element, remove){
     var op = 1;
     obj.timer = setInterval(function () {
-        if (op <= 0.1){
+	    
+        if ( op <= 0.1 ){
+	        
             clearInterval( obj.timer );
             element.style.display = 'none';
-            if( typeof undefined !== typeof remove ){
-            	remove.parentNode.removeChild(ele);
-            }
+            
+            if ( typeof undefined !== typeof remove ) remove.parentNode.removeChild(ele);
+            
         }
+        
         element.style.opacity = op;
         element.style.filter = 'alpha(opacity=' + op * 100 + ")";
         op -= 0.1;
@@ -304,16 +323,22 @@ Inzu_cartHelper.prototype.fadeOut = function(obj, element, remove){
 
 //Get the cookie's JSON data
 Inzu_cartHelper.prototype.getCookie = function(name) {
+	
  var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
  result && (result = JSON.parse(result[1]));
+ 
  return result;
+ 
 }
 
 
 //Set a cookie with a name, value and expiration date
 Inzu_cartHelper.prototype.setCookie = function(cname, cvalue, exdays) {
+	
     var d = new Date();
     d.setTime( d.getTime() + ( exdays*24*60*60*1000 ) );
+    
     var expires = "expires="+ d.toUTCString();
     document.cookie = cname + "=" + cvalue + "; " + expires;
+    
 }

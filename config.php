@@ -1,20 +1,24 @@
 <?php
 
-//Your API key
-$api_key = "02c4e87c154b34b5b06be242a36d54dd";
+define("API_KEY", "39a9a13d56112cbbcbac8259ddc4ae46");
+define("API_PASS", "!HDq36P+0-Si90f+VmwT5WFklJdTwIGu");
 
-$api_base = "http://api.inzu.net/1.4";
+define("API_BASE", "https://api.inzu.net/");
+define("API_VERSION", "1.5");
+
 
 //Check API connection can be established or print error
-$json = file_get_contents("{$api_base}/general/account_live?api_key={$api_key}");
-$data = json_decode($json);
 
-if($data->live_status != "true"){
+$data = INZU_GET("general/account_live");
+
+
+if ( $data->live_status != "true" ) {
 	
 	echo "Sorry the site is down at the moment.";
 	exit();
 	
 }
+
 
 //E-commerce
 

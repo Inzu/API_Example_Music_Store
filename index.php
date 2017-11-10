@@ -1,42 +1,43 @@
 <?php
 
 
+include("functions.php"); 
 include("config.php"); 
 
 
 session_start();
 
 
-//We store information such as format and cat no is session variables so that when an item is added 
-//the correct product is displayed after the user is redirected back to the shop.
+/*
+We store information such as format and cat no is session variables so that when an item is added 
+the correct product is displayed after the user is redirected back to the shop.
+*/
 
-//Get the format selected by the user and store in session variable 
-$format=preg_replace("/[^a-zA-Z0-9_]/", "", @$_REQUEST['format']);
-if($format){
-$_SESSION['format']=$format;
-}
+//Get the format selected by the user and store in session variable
+$format = preg_replace("/[^a-zA-Z0-9_]/", "", @$_REQUEST['format']);
 
-$format=@$_SESSION['format'];
+if ($format) $_SESSION['format'] = $format;
+$format = @$_SESSION['format'];
 
 
 //Cat no refers to a release's catalogue number - this is the same for all the formats in a release
-$cat_no=preg_replace("/[^a-zA-Z0-9_]/", "", @$_REQUEST['cat_no']);
-if($cat_no){
-$_SESSION['cat_no']=$cat_no;
-}
-
+$cat_no = preg_replace("/[^a-zA-Z0-9_]/", "", @$_REQUEST['cat_no']);
+if ($cat_no) $_SESSION['cat_no'] = $cat_no;
 
 
 //Featured release
 
 //If a release has been selected use "cat no" to get the data from INZU otherwise just select the latest release
-if($cat_no){
-$json = file_get_contents("$api_base/store/music?api_key={$api_key}&cat_no={$cat_no}&format={$format}");
-}else{
-$json = file_get_contents("$api_base/store/music?api_key={$api_key}&latest=true&format={$format}");
-}
 
-$inzu = json_decode($json); 
+if ( $cat_no ) {
+	
+$inzu = INZU_GET("store/music", array("cat_no"=>$cat_no, "format"=>$format));
+
+} else {
+	
+$inzu = INZU_GET("store/music", array("latest"=>"true", "format"=>$format));
+	
+}
 
 
 
@@ -44,27 +45,28 @@ $inzu = json_decode($json);
 Format list - Get the list of formats available for this release and make links to change the format whilst passing the cat no in the URL.
 */
 
-$format_array=explode(',',$inzu->data[0]->format_array); /// Turn comma separated format list into an array
+$format_array = explode(',', $inzu->data[0]->format_array); /// Turn comma separated format list into an array
 
-foreach($format_array as $keys=>$val){
+foreach ( $format_array as $keys=>$val ) {
+	
 $format_links.=<<<EOD
 <a href="index.php?cat_no={$inzu->data[0]->cat_no}&format={$val}" >$val</a>&nbsp;
 EOD;
-}
 
+}
 
 
 //Now create track list for the featured release and bundle information
 
 $i=0;
-foreach ($inzu->data[0]->track as $track) { 
 
+foreach ( $inzu->data[0]->track as $track ) { 
 
 $price = $track->{'price_'.$loc};
 
 //The track marked as "bundle" is used to retrieve information such as bundle price and bundle title
 
-if($track->number=="bundle"){
+if ( $track->number == "bundle" ) {
 
 //Create HTML for featured release bundle information
 $featured=<<<EOD
@@ -95,7 +97,8 @@ EOD;
 
 //If a preview is available attach a preview button
 
-if($track->preview!=""){
+if ( $track->preview != "" ) {
+	
 $audio_button=<<<EOD
 
 <script type="text/javascript">
@@ -108,20 +111,22 @@ document.write(controlBtn);
 
 </script>
 EOD;
-}else{
-$audio_button=NULL;
+
+} else {
+	
+$audio_button = NULL;
+
 }
 
 
 //Build track list leaving out the bundle
 
-if($track->number!="bundle"){
-
+if ( $track->number != "bundle" ) {
 
 //Only include buy button and price for each track if format is Digital
-if($inzu->data[0]->format=="Digital"){
+if ( $inzu->data[0]->format == "Digital" ) {
 
-$price_info ="- <strong>{$currency}{$price}</strong>";
+$price_info = "- <strong>{$currency}{$price}</strong>";
 
 $buy=<<<EOD
 <td width="40" align="left" >
@@ -135,7 +140,6 @@ $buy=<<<EOD
 EOD;
 
 }
-
 
 
 $i++;
@@ -158,26 +162,26 @@ EOD;
 
 
 
-
 //List of first 16 available releases, only displaying bundle information
 
-$json = file_get_contents("$api_base/store/music?api_key={$api_key}&page=1&page_rows=16&release=true");
-$inzu = json_decode($json); 
+$inzu = INZU_GET("store/music", array("page"=>"1", "page_rows"=>"16", "release"=>"true"));
 
-foreach ($inzu->data as $product) { 
+foreach ( $inzu->data as $product ) { 
 
 $price = $product->track[0]->{'price_'.$loc};
 
 
 //Create format links
-$format_links=NULL;
+$format_links = NULL;
 
-$format_array=explode(',',$product->format_array);
+$format_array = explode(',', $product->format_array);
 
-foreach($format_array as $keys=>$val){
+foreach ( $format_array as $keys=>$val ) {
+	
 $format_links.=<<<EOD
 <a href="index.php?cat_no={$product->cat_no}&format={$val}">$val</a>&nbsp;
 EOD;
+
 }
 
 
@@ -234,32 +238,37 @@ var playSound = {
 	trigger: function(previewId) {
 	
 	
-	if(this.currentSound && this.currentSoundId!=previewId){
+	if ( this.currentSound && this.currentSoundId != previewId ) {
 		
 	this.currentSound.pause();
 	this.currentSoundHTML.innerHTML="PLAY";
 	
 	}
 	
-	newSound=document.getElementById('audiotag'+previewId);
-	newSoundHTML=document.getElementById('control_btn'+previewId);
+	newSound = document.getElementById('audiotag'+previewId);
+	newSoundHTML = document.getElementById('control_btn'+previewId);
 	
-	if(newSoundHTML.innerHTML=="PLAY"){
+	if (newSoundHTML.innerHTML == "PLAY" ) {
+		
     newSound.play();
-	newSoundHTML.innerHTML="PAUSE";
+	newSoundHTML.innerHTML = "PAUSE";
 	
-	this.currentSoundId=previewId;
-	this.currentSound=document.getElementById('audiotag'+previewId);
-	this.currentSoundHTML=document.getElementById('control_btn'+previewId);
+	this.currentSoundId = previewId;
+	this.currentSound = document.getElementById('audiotag' + previewId);
+	this.currentSoundHTML = document.getElementById('control_btn' + previewId);
 	
 	newSound.onended = function() {
-	newSound.pause();
-	newSoundHTML.innerHTML="PLAY";
+			
+		newSound.pause();
+		newSoundHTML.innerHTML = "PLAY";
+	
 	};
 	
-	}else{
+	} else {
+		
 	newSound.pause();
-	newSoundHTML.innerHTML="PLAY";
+	newSoundHTML.innerHTML = "PLAY";
+	
 	}
 
 	}
@@ -292,8 +301,8 @@ var store_cart = new Inzu_cart("<?php echo $pay_url; ?>", "<?php echo $pay_callb
 <?php echo $featured; ?>
 	
 <div style="clear:both" >Track list</div>
-        <hr/>
-        <?php echo $track_list; ?>
+<hr/>
+<?php echo $track_list; ?>
 </div>        
         	
 <?php echo $more_releases; ?>

@@ -1,5 +1,6 @@
 <?php
 
+include("functions.php"); 
 include("config.php"); 
 
 $cart = preg_replace("/^a-z0-9,{};:\"./", "", @$_COOKIE["cart"]);
@@ -12,25 +13,27 @@ $totalprice = 0;
 
 $pay_url .= '?item_code'; 
 
-if( $cart_arr ){
+if ( $cart_arr ) {
 
 	//Create total and form item array
-	foreach($cart_arr->cart as $key => $item){	
+	foreach ( $cart_arr->cart as $key => $item ) {	
 		
 		$item_count += $item->quantity;
 		$totalprice += $item->price * $item->quantity;
 
-		for($i=0; $i < $item->quantity; $i++){
+		for ( $i=0; $i < $item->quantity; $i++ ) {
+			
 			array_push($item_array, $item->item_code);
-			$pay_url.='='.$item->item_code;
+			$pay_url .= '='.$item->item_code;
+			
 		}
 
 	}
 }
 
 
-$item_array=implode(",",$item_array);
-$totalprice = number_format($totalprice,2,'.',',');
+$item_array = implode(",", $item_array);
+$totalprice = number_format($totalprice, 2, '.', ',');
 
 ?>
 
@@ -46,11 +49,11 @@ $totalprice = number_format($totalprice,2,'.',',');
 <?php
 
 //Check if there are items in the cart
-if($item_array){
+if ( $item_array ) {
 
 	//INZU API Call to get product info for items
-	$json = file_get_contents("$api_base/store/cart?api_key={$api_key}&item_array={$item_array}");
-	$inzu = json_decode($json);
+	$inzu = INZU_GET("store/cart", array("item_array"=>$item_array));
+
 
 	$cart_display = NULL;
 
@@ -98,6 +101,7 @@ $i++;
 	</table>
 
 	<a id="checkout_link" href="<?php echo $pay_url; ?>">checkout</a>
+	<a id="back_link" href="index.php">back</a>
 
 	<div class="update" id="quantity-updated"></div>
     
