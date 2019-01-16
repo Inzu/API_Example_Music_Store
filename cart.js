@@ -285,7 +285,7 @@ Inzu_cartHelper.prototype.fadeIn = function(obj, element, fadeDelay){
         if ( op >= 0.9 ) {
 	        
             clearInterval(obj.timer);
-			setTimeout( obj.helper.fadeOut(obj, element), fadeDelay );
+            setTimeout( function() {obj.helper.fadeOut(obj, element)}, fadeDelay );
 			
         }
         
