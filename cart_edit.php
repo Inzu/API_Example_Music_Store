@@ -67,14 +67,14 @@ if ( $item_array ) {
 
 			<table cellspacing="0" cellpadding="0" width="100%" >
 				<tr>
-					<td valgin="left" width="265"><?php echo $item->title; ?></td>
-					<td align="right" valgin="middle" width="80"><?php echo $currency.$item->{'price_'.$loc}; ?></td>
+					<td align="left" valign="left" width="265"><?php echo $item->title; ?></td>
+					<td align="right" valign="middle" width="80"><?php echo $currency.$item->{'price_'.$loc}; ?></td>
 					<td align="right" valign="middle" width="8"></td>
-					<td align="left" valgin="middle" width="30">
+					<td align="left" valign="middle" width="30">
 					<input type="text" name="quantity" value="<?php echo $item->quantity; ?>" size="2" maxlength="2" onChange="cart.adjust('<?php echo $i; ?>', this.value)" >
 					</td>
-					<td align="right" valgin="middle"></td>
-					<td align="right" valgin="middle">
+					<td align="right" valign="middle"></td>
+					<td align="right" valign="middle">
 					<a href="javascript: cart.deleteItem(<?php echo $item->item_code.",".$i; ?>)"  class="remove">remove</a>
 					</td>
 				</tr>
