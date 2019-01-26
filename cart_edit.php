@@ -117,7 +117,7 @@ $i++;
 
 <script>
 
-var cart, pay_url ="<?php echo $pay_url; ?>";
+var pay_url ="<?php echo $pay_url; ?>";
 var cart = new Inzu_cartEdit(pay_url); 
 
 </script>
