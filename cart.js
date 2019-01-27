@@ -234,7 +234,7 @@ Inzu_cartEdit.prototype.deleteItem = function(item_code,i){
 	this.total.innerHTML = this.helper.cart_data.price.toFixed(2);
 	
 	//Update checkout link
-	var checkout = this.helper.cart_data.items;	
+	var checkout = this.checkoutlink + this.helper.cart_data.items;	
 	document.getElementById("checkout_link").setAttribute("href", checkout);
 
 	
