@@ -198,7 +198,7 @@ $more_releases.=<<<EOD
 
 	<div>
 	    <div class="img"><img src="{$product->image_thumb}" /></div>
-	    <h3>{$product->bundle_title}</h3>
+	    <h3>{$product->title}</h3>
 	    <p>{$product->short_description}</p>
 	    <p class="price"><strong>Price: {$currency}{$price}</strong></p>
 	</div>
