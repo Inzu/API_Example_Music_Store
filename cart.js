@@ -160,18 +160,17 @@ function Inzu_cartEdit(pay_url){
 }
 
 
-Inzu_cartEdit.prototype.adjust = function(i, value) {
-	
-	//If the input has been erased do nothing
-	if (value === '' ) return;
+Inzu_cartEdit.prototype.adjust = function(item_code, i, value) {
 
-	//If input is zero remove item
-	if ( value === '0' ) {
-		
-	this.deleteItem(i);
+	//If the input is invalid do nothing
+	if ( isNaN(value)) return;
+
+	if ( value == "0") {
+			
+	this.deleteItem(item_code, i);
 		
 	} else {
-
+		
 	//Adjust quantity of item
 	this.cookie.cart[parseInt(i)].quantity = parseInt(value);
 	
@@ -234,7 +233,7 @@ Inzu_cartEdit.prototype.deleteItem = function(item_code,i){
 	this.total.innerHTML = this.helper.cart_data.price.toFixed(2);
 	
 	//Update checkout link
-	var checkout = this.checkoutlink + this.helper.cart_data.items;	
+	var checkout = this.helper.cart_data.items;	
 	document.getElementById("checkout_link").setAttribute("href", checkout);
 
 	
@@ -285,7 +284,7 @@ Inzu_cartHelper.prototype.fadeIn = function(obj, element, fadeDelay){
         if ( op >= 0.9 ) {
 	        
             clearInterval(obj.timer);
-            setTimeout( function() {obj.helper.fadeOut(obj, element)}, fadeDelay );
+			setTimeout( function() {obj.helper.fadeOut(obj, element)}, fadeDelay );
 			
         }
         
