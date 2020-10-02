@@ -1,10 +1,10 @@
 
 /*
 \---------------------------------------------------------------------------/
-| INZU API                                                                  |
+| Inzu API                                                                  |
 | ======================                                                    |
 |                                                                           |
-| Copyright (c) 2012 INZU.net                                               |
+| Copyright (c) 2012 Inzu.net                                               |
 | For contact details, see: http://www.inzu.net                             |
 |                                                                           |
 | This program is free software; you can redistribute it and/or modify      |
@@ -38,7 +38,7 @@ INSTALLATION
 
 3. Load the index.php file in your browser.
 
-You should now see content from the INZU testing environment.
+You should now see content from the Inzu testing environment.
 
 Change the code in these files to suit your site design.
 
@@ -50,7 +50,7 @@ config.php - your API account settings and some shop settings such as currency a
 index.php - display an example music store page.
 style.css - styles for this example.
 
-For more information on the INZU API and to reference every API feed please visit http://developers.inzu.net or contact support@inzu.net.
+For more information on the Inzu API and to reference every API feed please visit http://developers.inzu.net or contact support@inzu.net.
 
 
 

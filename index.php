@@ -31,7 +31,7 @@ if ($cat_no) $_SESSION['cat_no'] = $cat_no;
 
 // Featured Release
 
-// If a release has been selected use "cat no" to get the data from INZU otherwise just select the latest release
+// If a release has been selected use "cat no" to get the data from Inzu otherwise just select the latest release
 
 if ( $cat_no ) {
 	

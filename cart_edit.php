@@ -53,7 +53,7 @@ $totalprice = number_format($totalprice, 2, '.', ',');
 
 if ( $item_array ) {
 
-	// INZU API Call to get product info for items
+	// Inzu API Call to get product info for items
 	
 	$inzu = INZU_GET("store/cart", array("item_array"=>$item_array));
 
