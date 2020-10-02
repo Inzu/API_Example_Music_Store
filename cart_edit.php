@@ -15,7 +15,8 @@ $pay_url .= '?item_code';
 
 if ( $cart_arr ) {
 
-	//Create total and form item array
+	// Create total and form item array
+	
 	foreach ( $cart_arr->cart as $key => $item ) {	
 		
 		$item_count += $item->quantity;
@@ -48,16 +49,17 @@ $totalprice = number_format($totalprice, 2, '.', ',');
 
 <?php
 
-//Check if there are items in the cart
+// Check if there are items in the cart
+
 if ( $item_array ) {
 
-	//INZU API Call to get product info for items
+	// INZU API Call to get product info for items
+	
 	$inzu = INZU_GET("store/cart", array("item_array"=>$item_array));
-
 
 	$cart_display = NULL;
 
-	$i=0;
+	$i = 0;
 
 	foreach ($inzu->data as $item) { 
 	

@@ -7,7 +7,7 @@ define("API_BASE", "https://api.inzu.net/");
 define("API_VERSION", "1.5");
 
 
-//Check API connection can be established or print error
+// Check API connection can be established or print error
 
 $data = INZU_GET("general/account_live");
 
@@ -20,13 +20,13 @@ if ( $data->live_status != "true" ) {
 }
 
 
-//E-commerce
+// E-commerce
 
-$pay_url = 'https://payments.inzu.net/'; //Current Inzu payment URL
-$pay_callback = 'http://mywebsite.com/complete'; //Your website order completion page
+$pay_url = 'https://payments.inzu.net/'; // Current Inzu payment URL
+$pay_callback = 'http://mywebsite.com/complete'; // Your website order completion page
 
-$loc = "us"; //Set the lowercase two character code for currency location (United States)
-$currency = "&#36;"; //The currency symbol (Dollars)
+$loc = "us"; // Set the lowercase two character code for currency location (United States)
+$currency = "&#36;"; // The currency symbol (Dollars)
 
 
 ?>

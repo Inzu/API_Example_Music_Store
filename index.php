@@ -9,25 +9,29 @@ session_start();
 
 
 /*
+	
 We store information such as format and cat no is session variables so that when an item is added 
 the correct product is displayed after the user is redirected back to the shop.
+
 */
 
-//Get the format selected by the user and store in session variable
+// Get the format selected by the user and store in session variable
+
 $format = preg_replace("/[^a-zA-Z0-9_]/", "", @$_REQUEST['format']);
 
 if ($format) $_SESSION['format'] = $format;
 $format = @$_SESSION['format'];
 
 
-//Cat no refers to a release's catalogue number - this is the same for all the formats in a release
+// Cat no refers to a release's catalogue number - this is the same for all the formats in a release
+
 $cat_no = preg_replace("/[^a-zA-Z0-9_]/", "", @$_REQUEST['cat_no']);
 if ($cat_no) $_SESSION['cat_no'] = $cat_no;
 
 
-//Featured release
+// Featured Release
 
-//If a release has been selected use "cat no" to get the data from INZU otherwise just select the latest release
+// If a release has been selected use "cat no" to get the data from INZU otherwise just select the latest release
 
 if ( $cat_no ) {
 	
@@ -42,10 +46,12 @@ $inzu = INZU_GET("store/music", array("latest"=>"true", "format"=>$format));
 
 
 /*
+	
 Format list - Get the list of formats available for this release and make links to change the format whilst passing the cat no in the URL.
+
 */
 
-$format_array = explode(',', $inzu->data[0]->format_array); /// Turn comma separated format list into an array
+$format_array = explode(',', $inzu->data[0]->format_array); // Turn comma separated format list into an array
 
 foreach ( $format_array as $keys=>$val ) {
 	
@@ -56,19 +62,21 @@ EOD;
 }
 
 
-//Now create track list for the featured release and bundle information
+// Now create track list for the featured release and bundle information
 
-$i=0;
+$i = 0;
 
 foreach ( $inzu->data[0]->track as $track ) { 
 
 $price = $track->{'price_'.$loc};
 
-//The track marked as "bundle" is used to retrieve information such as bundle price and bundle title
+
+// The track marked as "bundle" is used to retrieve information such as bundle price and bundle title
 
 if ( $track->number == "bundle" ) {
 
-//Create HTML for featured release bundle information
+// Create HTML for featured release bundle information
+
 $featured=<<<EOD
 <div>
     <img src="{$inzu->data[0]->image}" width="200" />
@@ -88,14 +96,14 @@ $featured=<<<EOD
 <a class="button buy" href="javascript: void(0);" onClick="store_cart.addItem(this)" >BUY</a>
 </div>
 EOD;
+
 }
 
 
 
-//Track list for featured release
+// Track list for featured release
 
-
-//If a preview is available attach a preview button
+// If a preview is available attach a preview button
 
 if ( $track->preview != "" ) {
 	
@@ -119,11 +127,12 @@ $audio_button = NULL;
 }
 
 
-//Build track list leaving out the bundle
+// Build track list leaving out the bundle
 
 if ( $track->number != "bundle" ) {
 
-//Only include buy button and price for each track if format is Digital
+// Only include buy button and price for each track if format is Digital
+
 if ( $inzu->data[0]->format == "Digital" ) {
 
 $price_info = "- <strong>{$currency}{$price}</strong>";
@@ -158,11 +167,11 @@ EOD;
 }
 }
 
-//End featured release
+// End featured release
 
 
 
-//List of first 16 available releases, only displaying bundle information
+// List of first 16 available releases, only displaying bundle information
 
 $inzu = INZU_GET("store/music", array("page"=>"1", "page_rows"=>"16", "release"=>"true"));
 
@@ -171,7 +180,8 @@ foreach ( $inzu->data as $product ) {
 $price = $product->track[0]->{'price_'.$loc};
 
 
-//Create format links
+// Create format links
+
 $format_links = NULL;
 
 $format_array = explode(',', $product->format_array);
@@ -228,7 +238,7 @@ EOD;
 <link href="style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 
-//HTML 5 audio play button
+// HTML 5 audio play button
 
 var playSound = {
 	
@@ -310,5 +320,3 @@ var store_cart = new Inzu_cart("<?php echo $pay_url; ?>", "<?php echo $pay_callb
 
 </body>	
 </html>
-
-
