@@ -1,12 +1,9 @@
 <?php
 
-
 include("functions.php"); 
 include("config.php"); 
 
-
 session_start();
-
 
 /*
 	
@@ -22,16 +19,16 @@ $format = preg_replace("/[^a-zA-Z0-9_]/", "", @$_REQUEST['format']);
 if ($format) $_SESSION['format'] = $format;
 $format = @$_SESSION['format'];
 
-
 // Cat no refers to a release's catalogue number - this is the same for all the formats in a release
 
 $cat_no = preg_replace("/[^a-zA-Z0-9_]/", "", @$_REQUEST['cat_no']);
 if ($cat_no) $_SESSION['cat_no'] = $cat_no;
 
+/* 
+	
+Featured Release - If a release has been selected use "cat no" to get the data from Inzu otherwise just select the latest release.
 
-// Featured Release
-
-// If a release has been selected use "cat no" to get the data from Inzu otherwise just select the latest release
+*/
 
 if ( $cat_no ) {
 	
@@ -42,8 +39,6 @@ $inzu = INZU_GET("store/music", array("cat_no"=>$cat_no, "format"=>$format));
 $inzu = INZU_GET("store/music", array("latest"=>"true", "format"=>$format));
 	
 }
-
-
 
 /*
 	
@@ -61,7 +56,6 @@ EOD;
 
 }
 
-
 // Now create track list for the featured release and bundle information
 
 $i = 0;
@@ -69,7 +63,6 @@ $i = 0;
 foreach ( $inzu->data[0]->track as $track ) { 
 
 $price = $track->{'price_'.$loc};
-
 
 // The track marked as "bundle" is used to retrieve information such as bundle price and bundle title
 
@@ -99,11 +92,11 @@ EOD;
 
 }
 
+/* 
 
+Track list for featured release - If a preview is available attach a preview button
 
-// Track list for featured release
-
-// If a preview is available attach a preview button
+*/
 
 if ( $track->preview != "" ) {
 	
@@ -125,7 +118,6 @@ EOD;
 $audio_button = NULL;
 
 }
-
 
 // Build track list leaving out the bundle
 
@@ -150,7 +142,6 @@ EOD;
 
 }
 
-
 $i++;
 
 $track_list.=<<<EOD
@@ -169,8 +160,6 @@ EOD;
 
 // End featured release
 
-
-
 // List of first 16 available releases, only displaying bundle information
 
 $inzu = INZU_GET("store/music", array("page"=>"1", "page_rows"=>"16", "release"=>"true"));
@@ -178,7 +167,6 @@ $inzu = INZU_GET("store/music", array("page"=>"1", "page_rows"=>"16", "release"=
 foreach ( $inzu->data as $product ) { 
 
 $price = $product->track[0]->{'price_'.$loc};
-
 
 // Create format links
 
@@ -194,14 +182,11 @@ EOD;
 
 }
 
-
 $format_links=<<<EOD
 <div class="formats">
 Formats: $format_links
 </div>
 EOD;
-
-
 
 $more_releases.=<<<EOD
 <div class="item more">
@@ -225,98 +210,83 @@ $more_releases.=<<<EOD
 </div>
 EOD;
 
-
 }
 
-
-
 ?>
-
 <html>
 <head>
-<script type="text/javascript" src="cart.js"></script>
-<link href="style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript">
-
-// HTML 5 audio play button
-
-var playSound = {
+	<script type="text/javascript" src="cart.js"></script>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
 	
-	currentSound:null,
-	currentSoundHTML:null,
+	// HTML 5 audio play button
 	
-	trigger: function(previewId) {
-	
-	
-	if ( this.currentSound && this.currentSoundId != previewId ) {
+	var playSound = {
 		
-	this.currentSound.pause();
-	this.currentSoundHTML.innerHTML="PLAY";
-	
-	}
-	
-	newSound = document.getElementById('audiotag'+previewId);
-	newSoundHTML = document.getElementById('control_btn'+previewId);
-	
-	if (newSoundHTML.innerHTML == "PLAY" ) {
+		currentSound:null,
+		currentSoundHTML:null,
 		
-    newSound.play();
-	newSoundHTML.innerHTML = "PAUSE";
-	
-	this.currentSoundId = previewId;
-	this.currentSound = document.getElementById('audiotag' + previewId);
-	this.currentSoundHTML = document.getElementById('control_btn' + previewId);
-	
-	newSound.onended = function() {
+		trigger: function(previewId) {
+		
+		
+		if ( this.currentSound && this.currentSoundId != previewId ) {
+			
+		this.currentSound.pause();
+		this.currentSoundHTML.innerHTML="PLAY";
+		
+		}
+		
+		newSound = document.getElementById('audiotag'+previewId);
+		newSoundHTML = document.getElementById('control_btn'+previewId);
+		
+		if (newSoundHTML.innerHTML == "PLAY" ) {
+			
+	    newSound.play();
+		newSoundHTML.innerHTML = "PAUSE";
+		
+		this.currentSoundId = previewId;
+		this.currentSound = document.getElementById('audiotag' + previewId);
+		this.currentSoundHTML = document.getElementById('control_btn' + previewId);
+		
+		newSound.onended = function() {
+				
+			newSound.pause();
+			newSoundHTML.innerHTML = "PLAY";
+		
+		};
+		
+		} else {
 			
 		newSound.pause();
 		newSoundHTML.innerHTML = "PLAY";
+		
+		}
 	
+		}
+		
 	};
 	
-	} else {
-		
-	newSound.pause();
-	newSoundHTML.innerHTML = "PLAY";
-	
-	}
-
-	}
-	
-};
-
-</script>
+	</script>
 </head>
-<!-- onpageshow refresh cart/page on browser back -->
-<body onpageshow="if (event.persisted) window.location.reload()">
-	
-<div id="cart">
-	
-<strong>Cart</strong>
-
-<div class="read-out">Items:  <span id="cart-size"></span></div>
-<div class="read-out"><span>Total:  <?php echo $currency; ?></span><span id="cart-total"></span><a class="button cart-edit" href="cart_edit.php">edit</a><a class="button cart-checkout" id="cart-checkout" href="">checkout</a></div>
-
-<div class="update" id="cart-updated"></div>
-
-<script type="text/javascript">
-var store_cart = new Inzu_cart("<?php echo $pay_url; ?>", "<?php echo $pay_callback; ?>");	
-</script>
-
-</div>
-
-<div id="product_list">
-
-<div class="item featured">		
-<?php echo $featured; ?>
-	
-<div style="clear:both" >Track list</div>
-<hr/>
-<?php echo $track_list; ?>
-</div>        
-        	
-<?php echo $more_releases; ?>
-</div>
-
-</body>	
+	<!-- onpageshow refresh cart/page on browser back -->
+	<body onpageshow="if (event.persisted) window.location.reload()">		
+	<div id="cart">	
+		<strong>Cart</strong>
+		<div class="read-out">Items: <span id="cart-size"></span></div>
+		<div class="read-out"><span>Total: <?php echo $currency; ?></span><span id="cart-total"></span><a class="button cart-edit" href="cart_edit.php">edit</a><a class="button cart-checkout" id="cart-checkout" href="">checkout</a></div>
+		<div class="update" id="cart-updated"></div>
+		<script type="text/javascript">
+		var store_cart = new Inzu_cart("<?php echo $pay_url; ?>", "<?php echo $pay_callback; ?>");	
+		</script>
+	</div>
+	<div id="product_list">
+		<div class="item featured">		
+			<?php echo $featured; ?>
+			<div style="clear:both" >Track list</div>
+			<hr/>
+			<?php echo $track_list; ?>
+		</div>        	
+		<?php echo $more_releases; ?>
+	</div>	
+	</body>	
 </html>

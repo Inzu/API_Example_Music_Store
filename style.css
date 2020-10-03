@@ -6,7 +6,6 @@ body {
 	
 }
 
-
 #cart {
 	
 	background-color: #f1f1f1;
@@ -37,7 +36,6 @@ body {
 		
 	}
 	
-
 .read-out .cart-checkout {
 	
 	background-color: #c77ac8;
@@ -49,7 +47,6 @@ body {
 	background-color: #86c8c8;
 
 }
-
 
 .update {
 	
@@ -77,14 +74,12 @@ body {
 		
 	}
 
-
 #product_list {
 	
 	padding: 20px;
 	width: 60%;
 	
 }
-
 
 .item {
 	
@@ -159,7 +154,6 @@ body {
 		
 	}
 	
-	
 	.item.featured {
 		
 		width: 100%;
@@ -189,9 +183,6 @@ body {
 		margin: 0 0 8px 0;
 		
 	}
-	
-	
-
 
 .formats a {
 	
@@ -201,8 +192,6 @@ body {
 	color: #fff;
 	background-color: #aeb2b0;
 }
-
-
 
 #cart-edit {
 	
@@ -263,4 +252,3 @@ body {
 		width: 100%;
 		
 	}
-

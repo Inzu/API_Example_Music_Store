@@ -1,7 +1,6 @@
 /*
-	Inzu Cart
+	Inzu cart
 */
-
 
 function Inzu_cart(checkoutlink,callback) {
 
@@ -22,12 +21,13 @@ function Inzu_cart(checkoutlink,callback) {
 			
 	}
 	
-	
 	this.refreshDisplay(this.cookie.cart);
 
 }
 
-// Display the cart contents and form checkout URL using the cookie data
+/*
+	Display the cart contents and form checkout URL
+*/
 
 Inzu_cart.prototype.refreshDisplay = function(cart){	
 
@@ -35,12 +35,10 @@ Inzu_cart.prototype.refreshDisplay = function(cart){
 	
     this.helper.loopCart(cart);
     
-
 	// Display data
 	
 	document.getElementById("cart-size").innerHTML = this.helper.cart_data.size;
 	document.getElementById("cart-total").innerHTML = this.helper.cart_data.price.toFixed(2); //2 decimal places
-
 
 	// Form checkout URL
 	
@@ -49,7 +47,9 @@ Inzu_cart.prototype.refreshDisplay = function(cart){
 	
 }
 
-
+/*
+	Add item
+*/
 
 Inzu_cart.prototype.addItem = function(el){
 
@@ -97,8 +97,6 @@ Inzu_cart.prototype.addItem = function(el){
 			'price' : price
 		};
 
-
-		
 	// Add data to cookie
 
 	if ( typeof undefined !== typeof data.item_code ) {
@@ -131,11 +129,9 @@ Inzu_cart.prototype.addItem = function(el){
 		
 		this.refreshDisplay(this.cookie.cart);
 
-
 		// Overwrite the cookie with the new cart data
 		
 		this.helper.setCookie('cart', JSON.stringify(this.cookie), 7);
-
 
 		// Display 'updated' message
 		
@@ -147,12 +143,13 @@ Inzu_cart.prototype.addItem = function(el){
 
 }
 
-// Callback function for when the cart is updated
+/*
+	Cart updated
+ */
 
 Inzu_cart.prototype.cartUpdated = function(){
 
 	var fadeDelay = 1500; // How long the message is displayed
-	
 	
 	// Reset and update the message display
 	
@@ -161,15 +158,12 @@ Inzu_cart.prototype.cartUpdated = function(){
 	outputElement.style.opacity = 1;
 	outputElement.style.filter = 'alpha(opacity=100)';
 	
-	
 	// Fade update message
 	
 	clearInterval( this.timer );
 	this.helper.fadeIn(this, document.getElementById("cart-updated"), fadeDelay);
 	
 }
-
-
 
 /*
 	Inzu Cart Edit 
@@ -186,6 +180,9 @@ function Inzu_cartEdit(pay_url){
 
 }
 
+/*
+	Quantity update
+*/
 
 Inzu_cartEdit.prototype.adjust = function(item_code, i, value) {
 
@@ -215,27 +212,26 @@ Inzu_cartEdit.prototype.adjust = function(item_code, i, value) {
 		// Set cookie
 		this.helper.setCookie('cart', JSON.stringify(this.cookie), 7);
 		
-		this.quantityUpdated(); // Callback
+		this.quantityUpdated(); 
 	
 	}
 	
 }
 
-
-// Callback function for when quantity is changed
+/*
+	Quantity update
+*/
 
 Inzu_cartEdit.prototype.quantityUpdated = function() {
 
 	var fadeDelay = 1500; // How long the message is displayed
-	
-	
+		
 	// Reset and update the message display
 	
 	var outputElement = document.getElementById("quantity-updated");
 	outputElement.innerHTML = 'Cart edited';
 	outputElement.style.opacity = 1;
 	outputElement.style.filter = 'alpha(opacity=100)';
-	
 	
 	// Fade update message
 	
@@ -244,6 +240,9 @@ Inzu_cartEdit.prototype.quantityUpdated = function() {
 	
 }
 
+/*
+	Delete item
+*/
 
 Inzu_cartEdit.prototype.deleteItem = function(item_code,i){
 	
@@ -260,32 +259,25 @@ Inzu_cartEdit.prototype.deleteItem = function(item_code,i){
 		
 	}
 	
-
 	// Delete and fade out row
 	
 	this.helper.fadeOut(this, document.getElementById('form_main_'+i));	  
-
 
 	// Update display
 	
 	this.helper.loopCart(this.cookie.cart);
 	this.total.innerHTML = this.helper.cart_data.price.toFixed(2);
 	
-	
 	// Update checkout link
 	
 	var checkout = this.helper.cart_data.items;	
 	document.getElementById("checkout_link").setAttribute("href", checkout);
-
 	
 }
 
-
-
 /*
-	Inzu helper object.	
+	Inzu helper object	
 */
-
 
 function Inzu_cartHelper(){}
 
@@ -310,10 +302,9 @@ Inzu_cartHelper.prototype.loopCart = function(cart){
 	
 }
 
-
-
-
-// Fade in selected element
+/*
+	Element fade in
+*/
 
 Inzu_cartHelper.prototype.fadeIn = function(obj, element, fadeDelay){
 	
@@ -339,8 +330,9 @@ Inzu_cartHelper.prototype.fadeIn = function(obj, element, fadeDelay){
     
 }
 
-
-// Fade out selected element. If an element is passed as the 'remove' parameter it will be removed
+/*
+	Element fade out
+*/
 
 Inzu_cartHelper.prototype.fadeOut = function(obj, element, remove) {
 	
@@ -364,9 +356,9 @@ Inzu_cartHelper.prototype.fadeOut = function(obj, element, remove) {
     
 }
 
-
-
-// Get the cookie's JSON data
+/*
+	Get cookie
+*/
 
 Inzu_cartHelper.prototype.getCookie = function(name) {
 	
@@ -377,8 +369,9 @@ Inzu_cartHelper.prototype.getCookie = function(name) {
  
 }
 
-
-// Set a cookie with a name, value and expiration date
+/*
+	Set cookie
+*/
 
 Inzu_cartHelper.prototype.setCookie = function(cname, cvalue, exdays) {
 	
