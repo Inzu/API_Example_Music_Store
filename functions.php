@@ -1,8 +1,10 @@
 <?php
 
-function INZU_GET($end_point, $args, $return = false){
+function INZU_GET($end_point, $args = NULL, $return = false){
 
-	$url = API_BASE.API_VERSION."/".$end_point."?".http_build_query($args);
+	$args = (!is_null($args)) ? http_build_query($args) : NULL;
+	
+	$url = API_BASE.API_VERSION."/".$end_point."?".$args;
 	
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
